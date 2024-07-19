@@ -20,7 +20,7 @@ export class EmmyNewDebuggerProvider extends DebuggerProvider {
         if (!debugConfiguration.request) {
             debugConfiguration.request = "launch";
             debugConfiguration.type = "emmylua_new";
-            debugConfiguration.ideConnectDebugger = true;
+            debugConfiguration.ideConnectDebugger = false;
             debugConfiguration.host = 'localhost';
             debugConfiguration.port = 9966;
         }

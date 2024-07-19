@@ -31,16 +31,8 @@
     "contributes": {
         "commands": [
             {
-                "command": "emmy.restartServer",
-                "title": "EmmyLua: Restart Lua Server"
-            },
-            {
                 "command": "emmy.insertEmmyDebugCode",
                 "title": "EmmyLua: Insert Emmy Debugger Code"
-            },
-            {
-                "command": "emmy.stopServer",
-                "title": "EmmyLua: Stop EmmyLua Language Server"
             }
         ],
         "languages": [
@@ -234,7 +226,7 @@
                             ".lua.txt",
                             ".lua.bytes"
                         ],
-                        "ideConnectDebugger": true
+                        "ideConnectDebugger": false
                     }
                 ],
                 "configurationSnippets": [
@@ -252,7 +244,7 @@
                                 ".lua.txt",
                                 ".lua.bytes"
                             ],
-                            "ideConnectDebugger": true
+                            "ideConnectDebugger": false
                         }
                     }
                 ],

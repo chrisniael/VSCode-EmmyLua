@@ -253,6 +253,6 @@ async function insertEmmyDebugCode() {
     const ins = new vscode.SnippetString();
     ins.appendText(`package.cpath = package.cpath .. ";${dllPath.replace(/\\/g, '/')}"\n`);
     ins.appendText(`local dbg = require("emmy_core")\n`);
-    ins.appendText(`dbg.tcpListen("${host}", ${port})`);
+    ins.appendText(`dbg.tcpConnect("${host}", ${port})`);
     activeEditor.insertSnippet(ins);
 }
