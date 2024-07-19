@@ -36,7 +36,8 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(onDidChangeActiveTextEditor, null, context.subscriptions));
     context.subscriptions.push(vscode.commands.registerCommand("emmy.insertEmmyDebugCode", insertEmmyDebugCode));
     context.subscriptions.push(vscode.languages.setLanguageConfiguration("lua", new LuaLanguageConfiguration()));
-    startServer();
+    // startServer();
+    ctx.dispose()
     registerDebuggers();
     return {
         reportAPIDoc: (classDoc: any) => {
@@ -244,7 +245,7 @@ async function insertEmmyDebugCode() {
         dllPath = path.join(context.extensionPath, `debugger/emmy/mac/${arch}/emmy_core.dylib`);
     }
     else if (isLinux) {
-        dllPath = path.join(context.extensionPath, `debugger/emmy/linux/emmy_core.so`);
+        dllPath = path.join(context.extensionPath, `debugger/emmy/linux/?.so`);
     }
 
     const host = 'localhost';
