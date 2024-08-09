@@ -2,6 +2,140 @@
 
 [English Change Log](CHANGELOG_EN.md)
 
+# next
+
+会考虑在intellij平台重新发布一个插件, 集成vscode端的内容
+
+# 0.8.17
+
+`FIX` 修复linux目录错误的问题
+
+`FIX` 修复table<TKey, TValue>注解的相关推断问题
+
+`FIX` 修复全局变量如果标记了class, 则在其他地方找不到引用的BUG
+
+`NEW` 支持注解`@source "<uri>#<line>:<col>"`当字段拥有该注解时, 跳转会跳转到该source指定的位置
+
+`NEW` VSCode-EmmyLua-Unity不久(2024年8月8日)会发布, 使用该插件导出的API, 会依据xlua的规则导出对应的API, 并且字段支持跳转到对应的C#实现
+
+`NEW` 枚举注解`@enum` 支持`key` attribute, 例如:
+```lua
+---@enum (key) AAA
+---| CS.A.B.C
+```
+这样在代码补全时, 会自动补全为`CS.A.B.C`而不是`AAA.CS.A.B.C`
+
+# 0.8.16
+
+`CHG` 所有函数的函数返回值被视为新的实例, 对其返回值的修改在不同实例之间互相独立
+
+`FIX` 修复_G无法提示和添加全局变量的BUG
+
+`FIX` 修复table泛型无法参与推断的BUG
+
+`NEW` 引入特殊泛型类型, `namespace<T : string>`, 该类型会试图引用命名空间例如:
+```lua
+CS = {
+    ---@type namespace<"UnityEngine">
+    UnityEngine = {},
+    ---@type namespace<"System">
+    System = {},
+}
+
+```
+
+
+# 0.8.15
+
+`CHG` 重构底层类型系统, 重构索引系统
+
+`FIX` 修复inline values计算错误
+
+`FIX` 修复return注解被函数返回类型覆盖的BUG
+
+`FIX` 修复param注解无法作用于for in 语句参数的bug
+
+`FIX` 修复private和protected可见性的诊断问题
+
+`CHG` 改变类型的成员逻辑, 现在不允许类型成员被随意扩展, 具体表现为:
+* 如果一个local变量被标记为`---@class`则其他文件无法为该类注入成员
+* 如果一个全局变量被标记为`---@class`则可以在其他文件为该类注入成员
+* 一个local变量作为模块被return出去后, 其他文件不能为该模块注入成员
+* 一个全局变量可以在任意文件注入成员
+
+`NEW` 支持class的attribute语法, 例如: `---@class (partial) A`, `---@enum (partial) B`
+
+`MEW` 支持部分类注解`partial`, 如果一个类被标记为部分类, 则在其他文件中需要再声明为部分类才能扩展其成员, 例如字符串类型的扩展:
+```lua
+---@class (partial) string
+local string = string
+
+function string:split(sep)
+end
+```
+
+`NEW` 支持精确类注解`exact`, 如果一个类被标记为精确类, 则只允许使用和定义通过`---@field`注解指定的成员例如:
+
+```lua
+---@class (exact) AA
+---@field a number
+local AA = {}
+
+AA.b = 123 -- error
+AA.a = 456 -- ok
+
+```
+
+`NEW` 诊断支持`inject-field-fail`, 该诊断默认关闭
+
+`NEW` 诊断支持`duplicate-type`, 该诊断默认开启
+
+`NEW` 代码补全会根据可见性, 屏蔽不能看见的成员
+
+`NEW` 引入命名空间注解`---@namespace`, 用于标记当前文件的命名空间, 例如:
+```lua
+---@namespace System
+```
+在当前文件指定命名空间后, 该文件定义的所有类型会处于当前命名空间下, 同一命名空间下的类不需要写命名空间前缀即可访问
+
+`NEW` 引入using注解`---@using`, 用于方便引用其他命名空间的类型, 例如:
+```lua
+---@using System
+```
+在当前文件指定using后, 该文件可以直接使用System命名空间下的类型, 例如:
+```lua
+-- A.lua
+
+---@namespace System
+---@class FFI
+
+
+-- B.lua
+---@using System
+
+---@type FFI
+
+--- C.lua
+---@type System.FFI
+```
+
+`NEW` 类型定义时, 若存在`.`分割的名称, 则会自动创建命名空间, 例如:
+```lua
+---@class System.FFC
+```
+
+`NEW` 引用查找规则优化, 通过当前类的成员查找引用时, 优先查找当前类的引用, 然后会查找所有子类的引用, 不会查找父类的引用
+
+`NEW` 代码补全优化, 代码片段补全定义函数语句时, 会模仿上一个语句的函数定义
+
+# 0.8.12
+
+`FIX` 修复代码补全的问题
+
+`FIX` 修复函数返回类型无法推断的BUG
+
+`NEW` require的路径提示支持使用`/`作为分隔符, 跳转/代码分析/文档链接均支持使用`/`作为分隔符
+
 # 0.8.11
 
 由于windows推送失败, 更新到0.8.11
