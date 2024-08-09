@@ -250,6 +250,6 @@ async function insertEmmyDebugCode() {
     ins.appendText(`package.cpath = package.cpath .. ";${dllPath.replace(/\\/g, '/')}"\n`);
     ins.appendText(`local dbg = require("emmy_core")\n`);
     ins.appendText(`dbg.tcpConnect("${host}", ${port})\n`);
-    ins.appendText(`dbg.breakHere()`);
+    ins.appendText(`-- dbg.breakHere()`);
     activeEditor.insertSnippet(ins);
 }
